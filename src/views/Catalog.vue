@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="row">
+      <Loader v-if="loading"/>
       <div
         class="col s4 m7"
         v-for="product in products"
         :key="product.id"
+        v-else
       >
         <div class="card">
           <div class="card-image">
-            <img :src=" require('../assets/img/' + product.img) ">
+            <img :src="require('../assets/img/' + product.img)">
             <span class="card-title">{{product.title}}</span>
           </div>
           <div class="card-content">
@@ -27,11 +29,12 @@
   export default {
     name: 'catalog',
     data: () => ({
-      products: []
+      products: [],
+      loading: true
     }),
     async mounted() {
-      const data = await this.$store.dispatch('GET_PRODUCTS')
-      this.products = data
+      this.products = await this.$store.dispatch('GET_PRODUCTS')
+      this.loading = false
     }
   }
 </script>

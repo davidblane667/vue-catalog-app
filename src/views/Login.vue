@@ -12,7 +12,7 @@
         <label for="user_name">Username</label>
         <small
           class="helper-text invalid"
-          v-if="$v.password.$dirty && !$v.password.required"
+          v-if="$v.username.$dirty && !$v.username.required"
         >Username is required</small>
       </div>
     </div>
@@ -59,7 +59,7 @@
     }),
     validations: {
       username: {required},
-      password: {required, minLength: minLength(6)},
+      password: {required, minLength: minLength(6)}
     },
     methods: {
       submitHandler() {
@@ -80,7 +80,7 @@
 
       }
     }
-}
+  }
 </script>
 
 <style lang="scss" scoped>

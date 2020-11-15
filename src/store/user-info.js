@@ -9,6 +9,9 @@ export default {
   mutations: {
     SET_USER_INFO(state, info) {
       state.info = info
+    },
+    CLEAR_USER_INFO(state) {
+      state.info = {success: false}
     }
   },
   actions: {
@@ -30,9 +33,16 @@ export default {
         commit('setError', e)
       }
     },
+    LOGOUT_USER({commit}) {
+      commit('CLEAR_USER_INFO')
+    },
     RELOAD_USER_INFO({commit}, info) {
       commit('SET_USER_INFO', info)
     }
   },
-  getters: {}
+  getters: {
+    GET_USER_INFO(s) {
+      return s.info
+    }
+  }
 }

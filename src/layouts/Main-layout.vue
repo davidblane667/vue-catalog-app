@@ -3,7 +3,7 @@
 
     <ul id="dropdown1" class="dropdown-content">
       <li>
-        <router-link to="/login">Log out</router-link>
+        <a href="#" @click.prevent="logoutSubmit">Log out</a>
       </li>
     </ul>
     <nav>
@@ -16,6 +16,9 @@
             <a class="dropdown-trigger" ref="dropdown" href="#" data-target="dropdown1">
               {{username}}<i class="material-icons right">arrow_drop_down</i>
             </a>
+          </li>
+          <li v-else>
+            <router-link to="/login">Login</router-link>
           </li>
         </ul>
       </div>
@@ -49,7 +52,13 @@
         })
       }
     },
-    methods: {},
+    methods: {
+      logoutSubmit() {
+        this.$store.dispatch('LOGOUT_USER')
+        localStorage.clear()
+        this.$router.push('/login')
+      }
+    },
     beforeDestroy() {
       if (this.dropdown && this.dropdown.destroy) {
         this.dropdown.destroy()

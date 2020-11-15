@@ -5,11 +5,13 @@ import store from './store'
 import Vuelidate from 'vuelidate'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import Loader from './components/Loader'
 import './registerServiceWorker'
 import 'materialize-css/dist/js/materialize.min'
 
 Vue.use(Vuelidate)
 Vue.use(VueAxios, axios)
+Vue.component('Loader', Loader)
 Vue.config.productionTip = false
 
 new Vue({
