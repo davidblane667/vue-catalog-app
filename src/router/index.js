@@ -11,7 +11,7 @@ const routes = [
     component: () => import('../views/Catalog')
   },
   {
-    path: '/',
+    path: '/catalog-item/:id',
     name: 'catalog-item',
     meta: {layout: 'main'},
     component: () => import('../views/Catalog-item')

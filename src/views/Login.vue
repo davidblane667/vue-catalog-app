@@ -69,6 +69,9 @@
         }
         this.$store.dispatch('LOGIN_USER', {username: this.username, password: this.password}).then((data) => {
           if (data.success && data.token) {
+            localStorage.setItem('username', this.username)
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('success', data.success)
             this.$router.push('/')
           } else {
             alert(data.message)

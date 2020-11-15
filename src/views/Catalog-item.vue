@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col s5 m5 z-depth-5">
         <div class="item-img">
-          <img class="responsive-img" src="../assets/img/sample-1.jpg">
+          <img class="responsive-img">
         </div>
         <a class="waves-effect waves-light btn">Feedback</a>
       </div>

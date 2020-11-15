@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 export default {
   state: {
     info: {
@@ -23,11 +24,14 @@ export default {
     async LOGIN_USER({rootState, commit}, {username, password}) {
       try {
         const {data} = await axios.post(`${rootState.defaultUrl}api/login/`, {username, password})
-        commit('SET_USER_INFO', data)
+        commit('SET_USER_INFO', {...data, username})
         return data
       } catch (e) {
         commit('setError', e)
       }
+    },
+    RELOAD_USER_INFO({commit}, info) {
+      commit('SET_USER_INFO', info)
     }
   },
   getters: {}
