@@ -13,7 +13,7 @@ export default {
       state.reviews = info
     },
     ADD_REVIEW(state, info) {
-      state.reviews.unshift(info)
+      state.reviews.push(info)
     }
   },
   actions: {
@@ -23,7 +23,7 @@ export default {
         commit('SET_PRODUCTS', data)
         return data
       } catch (e) {
-        commit('setError', e)
+        commit('SET_ERROR', e)
       }
     },
     async GET_REVIEWS({rootState, commit}, id) {
@@ -32,13 +32,13 @@ export default {
         commit('SET_REVIEWS', data)
         return data
       } catch (e) {
-        commit('setError', e)
+        commit('SET_ERROR', e)
       }
     },
     async SEND_FEEDBACK({rootState, commit}, {id, rate, text, date, username, token}) {
       try {
         const {data} = await axios.post(`${rootState.defaultUrl}api/reviews/${id}`, {
-          "Authorization": token,
+          "authorization": token,
           "product": id,
           "rate": rate,
           "text": text
@@ -46,7 +46,7 @@ export default {
         commit('ADD_REVIEW', {rate, text, id, date, username})
         return data
       } catch (e) {
-        commit('setError', e)
+        commit('SET_ERROR', e)
       }
     }
   },

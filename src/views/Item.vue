@@ -1,17 +1,34 @@
 <template>
   <div class="catalog-item">
+
     <Loader v-if="loading"/>
-    <div class="content" v-else>
+    <div
+      v-else
+      class="content"
+    >
       <div class="row">
-        <div class="col s5 m5 z-depth-5">
+        <div class="col s5 m5 z-depth-5 content-col">
           <div class="item-img">
-            <img class="responsive-img" :src="require('../assets/img/' + productInfo.img)">
+            <img
+              class="responsive-img"
+              :src="imgSrc(productInfo.img)"
+            >
           </div>
-          <CatalogItem_Modal v-if="showModal" @close="showModal = false" :id="productInfo.id"/>
-          <a class="waves-effect waves-light btn" id="show-modal" @click="showModal = true">Feedback</a>
+          <Modal
+            v-if="showModal"
+            :id="productInfo.id"
+            @close="closeModal"
+          />
+          <a
+            class="waves-effect waves-light btn"
+            id="show-modal"
+            @click="openModal"
+          >
+            Feedback
+          </a>
         </div>
         <div class="col s1 m1"></div>
-        <div class="col s5 m5 z-depth-5">
+        <div class="col s5 m5 z-depth-5 content-col">
           <div class="item-descr">
             <div class="flow-text">
               <span>Title: </span>
@@ -25,17 +42,22 @@
           </div>
         </div>
       </div>
-      <CatalogItem_Reviews :id="productInfo.id"/>
+      <Reviews :id="productInfo.id"/>
     </div>
+
   </div>
 </template>
 
 <script>
-  import CatalogItem_Reviews from '../components/CatalogItem_Reviews'
-  import CatalogItem_Modal from '../components/CatalogItem_Modal'
+  import Reviews from '../components/catalog/item/Reviews'
+  import Modal from '../components/catalog/item/Modal'
 
   export default {
-    name: 'catalog-item',
+    name: 'item',
+    components: {
+      Reviews,
+      Modal
+    },
     data: () => ({
       loading: true,
       productInfo: {},
@@ -43,27 +65,35 @@
     }),
     async mounted() {
       const data = await this.$store.dispatch('GET_PRODUCTS')
-      this.productInfo = data.filter(item => item.id === +this.$route.params.id)[0]
+      this.productInfo = data.find(item => (item.id === Number(this.$route.params.id)))
       this.loading = false
     },
-    methods: {},
-    components: {
-      CatalogItem_Reviews,
-      CatalogItem_Modal
+    methods: {
+      imgSrc(img) {
+        return require(`../assets/img/${img}`)
+      },
+      openModal() {
+        this.showModal = true
+      },
+      closeModal() {
+        this.showModal = false
+      }
     }
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  @import '../assets/styles/variable';
+
   .catalog-item {
-    & .col {
+    & .content-col {
       min-height: 500px;
       border-radius: 25px;
       padding: 25px 15px;
 
       img {
         border-radius: 10px;
-        box-shadow: 0px 5px 10px;
+        box-shadow: 0 5px 10px;
       }
 
       a {
@@ -74,8 +104,8 @@
         h1 {
           display: inline-block;
           line-height: 0;
-          font-size: 3.2rem;
-          color: #26a69a;
+          font-size: 38px;
+          color: $primaryColor;
         }
       }
     }
@@ -86,7 +116,6 @@
 
     .collection {
       .circle {
-        border: 3px solid #26a69a;
         display: flex !important;
         align-items: center;
         justify-content: center;

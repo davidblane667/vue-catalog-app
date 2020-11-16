@@ -1,20 +1,21 @@
 <template>
   <div class="wrapper">
 
-    <ul id="dropdown1" class="dropdown-content">
-      <li>
-        <a href="#" @click.prevent="logoutSubmit">Log out</a>
-      </li>
-    </ul>
     <nav>
       <div class="nav-wrapper">
         <ul class="right hide-on-med-and-down">
+          <li v-if="username">
+            {{username}}
+          </li>
           <li>
             <router-link to="/">Catalog</router-link>
           </li>
           <li v-if="username">
-            <a class="dropdown-trigger" ref="dropdown" href="#" data-target="dropdown1">
-              {{username}}<i class="material-icons right">arrow_drop_down</i>
+            <a
+              href="#"
+              @click.prevent="logoutSubmit"
+            >
+              Log out
             </a>
           </li>
           <li v-else>
@@ -41,14 +42,11 @@
     mounted() {
       if (localStorage.username) {
         this.username = localStorage.username
-        setTimeout(() => {
-          // eslint-disable-next-line
-          this.dropdown = M.Dropdown.init(this.$refs.dropdown, {alignment: 'top',constrainWidth: true})
-        })
+
         this.$store.dispatch('RELOAD_USER_INFO', {
           username: localStorage.username,
           token: localStorage.token,
-          success: Boolean(localStorage.success),
+          success: Boolean(localStorage.success)
         })
       }
     },
@@ -58,18 +56,15 @@
         localStorage.clear()
         this.$router.push('/login')
       }
-    },
-    beforeDestroy() {
-      if (this.dropdown && this.dropdown.destroy) {
-        this.dropdown.destroy()
-      }
     }
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  @import '../assets/styles/variable';
+
   .catalog-items {
-    max-width: 1100px;
+    max-width: $contentWidth;
     margin: 0 auto;
     padding: 50px 30px;
   }

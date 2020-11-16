@@ -11,16 +11,12 @@ export default new Vuex.Store({
     error: null
   },
   mutations: {
-    setError(state, error) {
+    SET_ERROR(state, error) {
       state.error = error
     }
   },
   actions: {},
-  getters: {
-    getDefaultUrl(state) {
-      return state.defaultUrl
-    }
-  },
+  getters: {},
   modules: {
     userInfo,
     productInfo

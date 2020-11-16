@@ -21,7 +21,7 @@ export default {
         commit('SET_USER_INFO', data)
         return data
       } catch (e) {
-        commit('setError', e)
+        commit('SET_ERROR', e)
       }
     },
     async LOGIN_USER({rootState, commit}, {username, password}) {
@@ -30,7 +30,7 @@ export default {
         commit('SET_USER_INFO', {...data, username})
         return data
       } catch (e) {
-        commit('setError', e)
+        commit('SET_ERROR', e)
       }
     },
     LOGOUT_USER({commit}) {

@@ -3,21 +3,26 @@
     <div class="row">
       <Loader v-if="loading"/>
       <div
+        v-else
         class="col s4 m7"
         v-for="product in products"
         :key="product.id"
-        v-else
       >
         <div class="card">
           <div class="card-image">
-            <img :src="require('../assets/img/' + product.img)">
+            <img :src="imgSrc(product.img)">
             <span class="card-title">{{product.title}}</span>
           </div>
           <div class="card-content">
             <p>{{product.text}}</p>
           </div>
           <div class="card-action">
-            <a href="#" @click.prevent="$router.push(`/catalog-item/${product.id}`)">This is a link</a>
+            <a
+              href="#"
+              @click.prevent="clickByProductLink(product.id)"
+            >
+              This is a link
+            </a>
           </div>
         </div>
       </div>
@@ -35,6 +40,14 @@
     async mounted() {
       this.products = await this.$store.dispatch('GET_PRODUCTS')
       this.loading = false
+    },
+    methods: {
+      imgSrc(img) {
+        return require('../assets/img/' + img)
+      },
+      clickByProductLink(id) {
+        this.$router.push(`/item/${id}`)
+      }
     }
   }
 </script>

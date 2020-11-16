@@ -2,11 +2,16 @@
   <div class="row">
     <div class="col s12 z-depth-5">
       <h5>Reviews</h5>
+
       <Loader v-if="loading"/>
-      <ul class="collection" v-else>
+
+      <ul
+        v-else
+        class="collection"
+      >
         <li
           class="collection-item avatar"
-          v-for="rev in reviews"
+          v-for="rev of reviews"
           :key="rev.id"
         >
           <div
@@ -25,31 +30,33 @@
 </template>
 
 <script>
-export default {
-  name: 'catalogItem_Reviews',
-  data: () => ({
-    reviews: [],
-    loading: true,
-  }),
-  props: {
-    id: {
-      type: Number,
-      default: null
+  export default {
+    name: 'reviews',
+    data: () => ({
+      reviews: [],
+      loading: true
+    }),
+    props: {
+      id: {
+        type: Number,
+        required: true
+      }
+    },
+    async mounted() {
+      this.reviews = await this.$store.dispatch('GET_REVIEWS', this.id)
+      this.loading = false
+    },
+    methods: {
+      rateColor(rate) {
+        return rate <= 2 ? 'red'
+             : rate <= 4 ? 'yellow'
+             : 'green'
+      }
     }
-  },
-  methods: {
-    rateColor(rate) {
-      return rate <= 2 ? 'red' : rate <= 4 ? 'yellow' : 'green'
-    }
-  },
-  async mounted() {
-    this.reviews = await this.$store.dispatch('GET_REVIEWS', this.id)
-    this.loading = false
   }
-}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .collection {
     position: relative;
 

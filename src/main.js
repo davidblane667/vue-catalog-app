@@ -2,10 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import Loader from './components/Loader'
+
 import Vuelidate from 'vuelidate'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import Loader from './components/Loader'
+
 import './registerServiceWorker'
 import 'materialize-css/dist/js/materialize.min'
 

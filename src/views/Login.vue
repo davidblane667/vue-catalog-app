@@ -1,5 +1,8 @@
 <template>
-  <form class="col s12 z-depth-5" @submit.prevent="submitHandler">
+  <form
+    class="col s12 z-depth-5"
+    @submit.prevent="submitHandler"
+  >
     <div class="row">
       <div class="input-field col s12">
         <input
@@ -7,13 +10,15 @@
           type="text"
           class="validate"
           v-model="username"
-          :class="{invalid: $v.username.$dirty && !$v.username.required}"
+          :class="{'invalid': invalidUsername}"
         >
         <label for="user_name">Username</label>
         <small
           class="helper-text invalid"
-          v-if="$v.username.$dirty && !$v.username.required"
-        >Username is required</small>
+          v-if="invalidUsername"
+        >
+          Username is required
+        </small>
       </div>
     </div>
     <div class="row">
@@ -23,25 +28,38 @@
           type="password"
           class="validate"
           v-model="password"
-          :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
+          :class="{invalid: invalidPassword}"
         >
         <label for="password">Password</label>
         <small
           class="helper-text invalid"
-          v-if="$v.password.$dirty && !$v.password.required"
-        >Password is required</small>
+          v-if="invalidPasswordRequired"
+        >
+          Password is required
+        </small>
         <small
           class="helper-text invalid"
-          v-if="$v.password.$dirty && !$v.password.minLength"
-        >Min length password is {{$v.password.$params.minLength.min}} symbols. Now is {{password.length}}</small>
+          v-if="invalidPasswordMinLength"
+        >
+          Min length password is {{passwordMinlength}} symbols. Now is {{password.length}}
+        </small>
       </div>
     </div>
     <div class="row">
-      <div class="col s12 center">
-        <button class="btn waves-effect waves-light" type="submit" name="action">Log in
-          <i class="material-icons right">send</i>
+      <div class="col s12 form-footer">
+        <button
+          class="btn waves-effect waves-light"
+          type="submit"
+          name="action"
+        >
+          Log in <i class="material-icons right">send</i>
         </button>
-        <a class="waves-effect waves-teal btn-flat">Create a Sign Up</a>
+        <router-link
+          to="/registration"
+          class="waves-effect waves-teal btn-flat"
+        >
+          Create a Sign Up
+        </router-link>
       </div>
     </div>
 
@@ -58,31 +76,51 @@
       password: ''
     }),
     validations: {
-      username: {required},
-      password: {required, minLength: minLength(6)}
+      username: {
+        required
+      },
+      password: {
+        required,
+        minLength: minLength(6)
+      }
     },
     methods: {
-      submitHandler() {
+      async submitHandler() {
         this.$v.$touch()
-        if (this.$v.$invalid) {
-          return
-        }
-        this.$store.dispatch('LOGIN_USER', {username: this.username, password: this.password}).then((data) => {
-          if (data.success && data.token) {
+        if (!this.$v.$invalid) {
+          const data = await this.$store.dispatch('LOGIN_USER', {
+            username: this.username,
+            password: this.password
+          })
+
+          if (data && data.success && data.token) {
             localStorage.setItem('username', this.username)
             localStorage.setItem('token', data.token)
             localStorage.setItem('success', data.success)
-            this.$router.push('/')
+            await this.$router.push('/')
           } else {
             alert(data.message)
           }
-        })
 
+        }
+      }
+    },
+    computed: {
+      invalidUsername() {
+        return (this.$v.username.$dirty && !this.$v.username.required)
+      },
+      invalidPassword() {
+        return ((this.$v.password.$dirty && !this.$v.password.required) || (this.$v.password.$dirty && !this.$v.password.minLength))
+      },
+      invalidPasswordRequired() {
+        return (this.$v.password.$dirty && !this.$v.password.required)
+      },
+      invalidPasswordMinLength() {
+        return (this.$v.password.$dirty && !this.$v.password.minLength)
+      },
+      passwordMinlength() {
+        return this.$v.password.$params.minLength.min
       }
     }
   }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

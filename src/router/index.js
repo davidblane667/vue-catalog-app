@@ -11,10 +11,10 @@ const routes = [
     component: () => import('../views/Catalog')
   },
   {
-    path: '/catalog-item/:id',
-    name: 'catalog-item',
+    path: '/item/:id',
+    name: 'item',
     meta: {layout: 'main'},
-    component: () => import('../views/CatalogItem')
+    component: () => import('../views/Item')
   },
   {
     path: '/login',
